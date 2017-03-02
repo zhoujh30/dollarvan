@@ -1,0 +1,116 @@
+html, body, #container {
+  height: 100%; 
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  padding-top: 50px;
+}
+
+#map {
+  width: auto;
+  height: 100%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.55);
+}
+
+#sidebar {
+  width: 300px;
+  height: 100%;
+  max-width: 100%;
+  float: left;
+  -webkit-transition: all 0.25s ease-out;
+  -moz-transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
+}
+
+.navbar .navbar-brand {
+  font-weight: bold;
+  font-size: 25px;
+  color: #FFFFFF;
+}
+
+.navbar {
+  background-image: linear-gradient(to bottom, #2b6988 0%, #1f4b61 100%);
+}
+
+.navbar-inverse .navbar-nav>li>a {
+  color: #fff;
+}
+
+.info {
+  width: 410px;
+  height: 30px;
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.info h5 {
+  margin: 0 0 10px;
+  text-align: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-weight: bold;
+}
+
+.info i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 20px;
+  margin-left: 50px;
+  opacity: 0.5;
+  outline: gray solid thin;
+  margin-top: 5px;
+}
+
+.click {
+  width: 410px;
+  height: 375px;
+  /*height: 175px;*/
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.click h5 {
+  margin: 0 0 5px;
+  text-align: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-weight: bold;
+}
+
+.legend {
+  width: 410px;
+  height: 194px;
+  text-align: left;
+  line-height: 18px;
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 20px;
+  margin-left: 50px;
+  margin-top: auto;
+  opacity: 0.5;
+  outline: gray solid thin;
+}
+
+/*.nvd3 rect{
+      display: none !important;
+}*/
+
+
+
