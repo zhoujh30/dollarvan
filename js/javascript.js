@@ -1,811 +1,531 @@
 
-var map1 = new L.Map('map', { 
-  layer:[all, spanish, frenchCreole, italian, russian, chinese, korean],
-  center: [40.7127,-74.0059],
-  zoom: 11
-});
-
-// var sidebar = L.control.sidebar('sidebar').addTo(map1);
-
-// L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',{
-//   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-// }).addTo(map1);
-
-L.tileLayer('https://api.mapbox.com/styles/v1/zhoujh42/cishmoep8000c2ym30mtsm5o0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiemhvdWpoNDIiLCJhIjoiY2VkNGU4OGE1YjEwODMxODUyMmUzNjYwZjQyOWNkODMifQ.55ZHYWs5RP3CfpIyrmOisQ').addTo(map1);
-
-var info = L.control({position: 'bottomleft'});
-var infoClick = L.control({position: 'bottomleft'});
-var legend = L.control({position: 'bottomleft'});
-// window.top = 0;
-
-//add Community District Boundary
-var nycd = L.geoJson(nycdData, {style: nycdStyle}).addTo(map1);
-
-function nycdStyle(feature) {
-  return {
-  weight: 3,
-  opacity: 1,
-  dashArray: '5',
-  color: 'black'
-  };
-}
-
-
-//default All layer
-
-var all = L.geoJson(mapData, {style: allStyle, onEachFeature: onEachFeatureAll}).addTo(map1);
-
-info.updateAll = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getAllColor(props.lgoenglepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b>'
-    // + '</b><br />' + "All - Speak English Less Than 'Very Well'  <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgoenglepp + '%</h5>') 
-    : '<h5>Hover over a Neighborhood</h5>');
-};
-
-//language_top, language_second, language_pct_top, language_pct_moe_top
-
-infoClick.updateAll = function (props) {
-
-  this._div.innerHTML =  (props ?   
-    // '<i style="background:' + getAllColor(props.lgoenglepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br/><br/>Speak English Less Than "Very Well"'  
-    // + (props.bndrytype != 'NTA' ? 'N/A' : props.language_top + '</b><br /><h5>' +  top + '%' + '  +/-  ' + props.language_pct_moe_top + '%</h5>') 
-    + (props.bndrytype != 'NTA' ? '<br/><br/><br/>The neighborhood you are looking for <br/>does not have data available.' : '<br/><b>' + 'Total: </b>' + props.lgoenglepp + '%<br/><br/>Top Languages<br/>'
-    + '<div id="ntaChart"><svg width="400" height="290"></svg></div>'
-    // + '<b>' + props.language_top.split("-")[0] + ': </b>' + ((props.language_pct_top)*100).toFixed(1) + '%<br/>'
-    // + '<b>' + props.language_second.split("-")[0] + ': </b>' + ((props.language_pct_second)*100).toFixed(1) + '%<br/>'
-    // + '<b>' + props.language_third.split("-")[0] + ': </b>' + ((props.language_pct_third)*100).toFixed(1) + '%<br/>'
-    // + '<b>' + props.language_fourth.split("-")[0] + ': </b>' + ((props.language_pct_fourth)*100).toFixed(1) + '%<br/>'
-    // + '<b>' + props.language_fifth.split("-")[0] + ': </b>' + ((props.language_pct_fifth)*100).toFixed(1) + '%<br/>'
-
-    ) : '</br></br></br></br></br></br><h5>Click a Neighborhood</h5>');
-
-};
-
-function getAllColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 10 ? '#fef0d9':
-  d <= 25 ? '#fdcc8a':
-  d <= 50 ? '#fc8d59':
-  '#d7301f';
-}
-
-function allStyle(feature) {
-  return {
-  fillColor: getAllColor(feature.properties.lgoenglepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureAll(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightAll,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureAll(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateAll(layer.feature.properties);
-} 
-
-function resetHighlightAll(e) {
-    all.resetStyle(e.target);
-}
-
-
-function zoomToFeatureAll(e) {
-    var layer = e.target;
-    // map1.fitBounds(layer.getBounds());
-    layer.setStyle({
-        weight: 3,
-        color: 'red',
-        dashArray: '',
-        fillOpacity: 0.6
-    });
-    props = layer.feature.properties;
-    infoClick.updateAll(props);
-
-    nv.addGraph(function() {
-    var ntaChart = nv.models.discreteBarChart()
-        .x(function(d) { return d.label })    //Specify the data accessors.
-        .y(function(d) { return d.value })
-        .wrapLabels(true)
-        // .tooltips(false)        //Don't show tooltips
-        .showValues(true)       //...instead, show the bar value right on top of each bar.
-        .showYAxis(false)
-        .duration(500)
-        .margin({left:10,right:10})
-        // .width(222)
-        .color(['rgb(27,158,119)','rgb(217,95,2)','rgb(117,112,179)','rgb(231,41,138)'])
-        .valueFormat(function(d){
-          return d + "%";
-        })
-        // .rotateLabels(-20)
-        // .showlegend(true)
-        // .tooltips=(false)
-        ;
-
-    d3.select('#ntaChart svg')
-        .datum(exampleData())
-        .call(ntaChart);
-
-    nv.utils.windowResize(ntaChart.update);
-
-    return ntaChart;
-  });
-
-  //Each bar represents a single discrete quantity.
-  function exampleData() {
-   return  [ 
-      {
-        key: "Cumulative Return",
-        values: [
-          { 
-            "label" : props.language_top.split("-")[0],
-            "value" : ((parseFloat(props.language_pct_top))*100).toFixed(1)
-          } , 
-          { 
-            "label" : props.language_second.split("-")[0], 
-            "value" : ((parseFloat(props.language_pct_second))*100).toFixed(1)
-          } , 
-          { 
-            "label" : props.language_third.split("-")[0], 
-            "value" : ((parseFloat(props.language_pct_third))*100).toFixed(1)
-          } , 
-          { 
-            "label" : props.language_fourth.split("-")[0], 
-            "value" : ((parseFloat(props.language_pct_fourth))*100).toFixed(1)
-          } 
-          // , 
-          // { 
-          //   "label" : props.language_fifth.split("-")[0],
-          //   "value" : (100*props.language_pct_fifth).toFixed(1)
-          // } 
-        ]
-      }
-    ]
-
-  }
-
-} 
-
-legend.onAdd = function (map) {
-
-  var divAll = L.DomUtil.create('div', 'info legend'),
-    gradesAll = [0, 10, 25, 50],
-    labelsAll = [],
-    from, to;
-
-  for (var i = 0; i < gradesAll.length; i++) {
-    from = gradesAll[i];
-    to = gradesAll[i + 1];
-
-    labelsAll.push(
-      '<i style="background:' + getAllColor(from + 0.1, "NTA") + '"></i> ' +
-      from + (to ? '% &ndash; ' + to + '%' : '% +') );
-  }
-
-  divAll.innerHTML = "<h5>All - Speak English Less Than 'Very Well'</h5>" + '<i style= "outline: thin black dashed; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getAllColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getAllColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsAll.join('<br>');
-            
-  return divAll;
-};
-
-legend.addTo(map1);
-
-
-info.onAdd = function (map) {
-  this._div = L.DomUtil.create('div', 'info');
-  this.updateAll();
-  return this._div;
-};
-
-info.addTo(map1);
-
-infoClick.onAdd = function (map) {
-  this._div = L.DomUtil.create('div', 'info click');
-  this.updateAll(); 
-  return this._div;
-};
-
-infoClick.addTo(map1);
-
-
-//Spanish Layer
-
-var spanish = L.geoJson(mapData, {style: spanishStyle, onEachFeature: onEachFeatureSpanish});
-
-info.updateSpanish = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getSpanishColor(props.lgsplepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br />' + "Spanish - Speak English Less Than 'Very Well' <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgsplepp + '%</h5>') : '<h5>Hover over a Neighborhood</h5>');
-};
-
-function getSpanishColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 5 ? '#edf8fb':
-  d <= 15 ? '#b3cde3':
-  d <= 25 ? '#8c96c6':
-  '#88419d';
-}
-
-function spanishStyle(feature) {
-  return {
-  fillColor: getSpanishColor(feature.properties.lgsplepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureSpanish(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightSpanish,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureSpanish(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateSpanish(layer.feature.properties);
-} 
-
-function resetHighlightSpanish(e) {
-    spanish.resetStyle(e.target);
-}
-
-function zoomToFeatureSpanish(e) {
-    map1.fitBounds(e.target.getBounds());
-    info.updateSpanish(layer.feature.properties);
-}
-
-//French Creole Layer
-
-var frenchCreole = L.geoJson(mapData, {style: frenchCrStyle, onEachFeature: onEachFeatureFrenchCr});
-
-info.updateFrenchCr = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getFrenchCrColor(props.lgfrcrlepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br />' + "French Creole - Speak English Less Than 'Very Well' <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgfrcrlepp + '%</h5>') : '<h5>Hover over a Neighborhood</h5>');
-};
-
-function getFrenchCrColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 0.5 ? '#feebe2':
-  d <= 2.5 ? '#fbb4b9':
-  d <= 4.5 ? '#f768a1':
-  '#ae017e';
-}
-
-function frenchCrStyle(feature) {
-  return {
-  fillColor: getFrenchCrColor(feature.properties.lgfrcrlepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureFrenchCr(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightFrenchCr,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureFrenchCr(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateFrenchCr(layer.feature.properties);
-} 
-
-function resetHighlightFrenchCr(e) {
-    frenchCreole.resetStyle(e.target);
-}
-
-function zoomToFeatureFrenchCr(e) {
-    map1.fitBounds(e.target.getBounds());
-    info.updateFrenchCr(layer.feature.properties);
-}
-
-//Italian Layer
-
-var italian = L.geoJson(mapData, {style: italianStyle, onEachFeature: onEachFeatureItalian});
-
-info.updateItalian = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getItalianColor(props.lgitlepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br />' + "Italian - Speak English Less Than 'Very Well' <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgitlepp + '%</h5>') : '<h5>Hover over a Neighborhood</h5>');
-};
-
-function getItalianColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 0.5 ? '#fee5d9':
-  d <= 1 ? '#fcae91':
-  d <= 2 ? '#fb6a4a':
-  '#cb181d';
-}
-
-function italianStyle(feature) {
-  return {
-  fillColor: getItalianColor(feature.properties.lgitlepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureItalian(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightItalian,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureItalian(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateItalian(layer.feature.properties);
-} 
-
-function resetHighlightItalian(e) {
-    italian.resetStyle(e.target);
-}
-
-function zoomToFeatureItalian(e) {
-    map1.fitBounds(e.target.getBounds());
-    info.updateItalian(layer.feature.properties);
-}
-
-//Russian Layer
-
-var russian = L.geoJson(mapData, {style: russianStyle, onEachFeature: onEachFeatureRussian});
-
-info.updateRussian = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getRussianColor(props.lgruslepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br />' + "Russian - Speak English Less Than 'Very Well' <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgruslepp + '%</h5>')
-      : '<h5>Hover over a Neighborhood</h5>');
-};
-
-function getRussianColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 2 ? '#fee5d9':
-  d <= 10 ? '#fcae91':
-  d <= 20 ? '#fb6a4a':
-  '#cb181d';
-}
-
-function russianStyle(feature) {
-  return {
-  fillColor: getRussianColor(feature.properties.lgruslepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureRussian(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightRussian,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureRussian(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateRussian(layer.feature.properties);
-} 
-
-function resetHighlightRussian(e) {
-    russian.resetStyle(e.target);
-}
-
-function zoomToFeatureRussian(e) {
-    map1.fitBounds(e.target.getBounds());
-    info.updateRussian(layer.feature.properties);
-}
-
-//Chinese Layer
-
-var chinese = L.geoJson(mapData, {style: chineseStyle, onEachFeature: onEachFeatureChinese});
-
-info.updateChinese = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getChineseColor(props.lgchilepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br />' + "Chinese - Speak English Less Than 'Very Well' <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgchilepp + '%</h5>')
-      : '<h5>Hover over a Neighborhood</h5>');
-};
-
-function getChineseColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 3 ? '#f1eef6':
-  d <= 10 ? '#bdc9e1':
-  d <= 20 ? '#74a9cf':
-  '#0570b0';
-}
-
-function chineseStyle(feature) {
-  return {
-  fillColor: getChineseColor(feature.properties.lgchilepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureChinese(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightChinese,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureChinese(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateChinese(layer.feature.properties);
-} 
-
-function resetHighlightChinese(e) {
-    chinese.resetStyle(e.target);
-}
-
-function zoomToFeatureChinese(e) {
-    map1.fitBounds(e.target.getBounds());
-    info.updateChinese(layer.feature.properties);
-}
-
-//Korean Layer
-
-var korean = L.geoJson(mapData, {style: koreanStyle, onEachFeature: onEachFeatureKorean});
-
-info.updateKorean = function (props) {
-  this._div.innerHTML =   (props ? 
-    // '<i style="background:' + getKoreanColor(props.lgkorlepp, props.bndrytype) + '"></i> ' + 
-    '<b>' + props.ntaname + '</b><br />' + "Korean - Speak English Less Than 'Very Well' <h5>" + (props.bndrytype != 'NTA' ? 'N/A' : props.lgkorlepp + '%</h5>')
-      : '<h5>Hover over a Neighborhood</h5>');
-};
-
-function getKoreanColor(d,k) {
-  return k === 'Airport/Non-Park'? '#969696':
-  k === 'Parks'? '#bae4b3':
-  d <= 0.5 ? '#f1eef6':
-  d <= 2 ? '#d7b5d8':
-  d <= 5 ? '#df65b0':
-  '#ce1256';
-}
-
-function koreanStyle(feature) {
-  return {
-  fillColor: getKoreanColor(feature.properties.lgkorlepp, feature.properties.bndrytype),
-  weight: .5,
-  opacity: 1,
-  fillOpacity: 0.5,
-  color: 'grey'
-  };
-}
-
-function onEachFeatureKorean(feature, layer) {
-    layer.on({
-        mouseover: highlightFeatureAll,
-        mouseout: resetHighlightKorean,
-        click: zoomToFeatureAll
-    });
-}
-
-function highlightFeatureKorean(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 3,
-      color: 'white',
-      dashArray: '',
-      fillOpacity: 0.6
-  });
-
-  if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-      }
-  info.updateKorean(layer.feature.properties);
-} 
-
-function resetHighlightKorean(e) {
-    korean.resetStyle(e.target);
-}
-
-function zoomToFeatureKorean(e) {
-    map1.fitBounds(e.target.getBounds());
-    info.updateKorean(layer.feature.properties);
-}
-
-
-var baselayMaps = {
-  "All - Speak English Less Than 'Very Well'": all,
-  "Spanish - Speak English Less Than 'Very Well'": spanish,
-  "French Creole - Speak English Less Than 'Very Well'": frenchCreole,
-  "Italian - Speak English Less Than 'Very Well'": italian,
-  "Russian - Speak English Less Than 'Very Well'": russian,
-  "Chinese - Speak English Less Than 'Very Well'": chinese,
-  "Korean - Speak English Less Than 'Very Well'": korean
-};
-
-L.control.layers(baselayMaps, null, {collapsed:false}).addTo(map1); 
-
-
-//Legend Change
-map1.on("baselayerchange", function(eventLayer) {
-  legend.getContainer().innerHTML = eventLayer.name;
-  if (eventLayer.name === "All - Speak English Less Than 'Very Well'") {
-
-    var gradesAll = [0, 10, 25, 50],
-        labelsAll = [],
-        from, to;
-
-    for (var i = 0; i < gradesAll.length; i++) {
-      from = gradesAll[i];
-      to = gradesAll[i + 1];
-
-      labelsAll.push(
-        '<i style="background:' + getAllColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getAllColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getAllColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsAll.join('<br>');
-    } 
-
-  
-  else if (eventLayer.name === "Spanish - Speak English Less Than 'Very Well'") {
-
-    var gradesSpanish = [0, 5, 15, 25],
-        labelsSpanish = [],
-        from, to;
-
-    for (var i = 0; i < gradesSpanish.length; i++) {
-      from = gradesSpanish[i];
-      to = gradesSpanish[i + 1];
-
-      labelsSpanish.push(
-        '<i style="background:' + getSpanishColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getSpanishColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getSpanishColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsSpanish.join('<br>');
-    }
-
-  else if (eventLayer.name === "French Creole - Speak English Less Than 'Very Well'") {
-
-    var gradesFrenchCr = [0, 0.5, 2.5, 4.5],
-        labelsFrenchCr = [],
-        from, to;
-
-    for (var i = 0; i < gradesFrenchCr.length; i++) {
-      from = gradesFrenchCr[i];
-      to = gradesFrenchCr[i + 1];
-
-      labelsFrenchCr.push(
-        '<i style="background:' + getFrenchCrColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getFrenchCrColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getFrenchCrColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsFrenchCr.join('<br>');
-    } 
-
-  else if (eventLayer.name === "Italian - Speak English Less Than 'Very Well'") {
-
-    var gradesItalian = [0, 0.5, 1, 2],
-        labelsItalian = [],
-        from, to;
-
-    for (var i = 0; i < gradesItalian.length; i++) {
-      from = gradesItalian[i];
-      to = gradesItalian[i + 1];
-
-      labelsItalian.push(
-        '<i style="background:' + getItalianColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getItalianColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getItalianColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsItalian.join('<br>');
-    } 
-
-  else if (eventLayer.name === "Russian - Speak English Less Than 'Very Well'") {
-
-    var gradesRussian = [0, 2, 10, 20],
-        labelsRussian = [],
-        from, to;
-
-    for (var i = 0; i < gradesRussian.length; i++) {
-      from = gradesRussian[i];
-      to = gradesRussian[i + 1];
-
-      labelsRussian.push(
-        '<i style="background:' + getRussianColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getRussianColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getRussianColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsRussian.join('<br>');
-    } 
-
-  else if (eventLayer.name === "Chinese - Speak English Less Than 'Very Well'") {
-
-    var gradesChinese = [0, 3, 10, 20],
-        labelsChinese = [],
-        from, to;
-
-    for (var i = 0; i < gradesChinese.length; i++) {
-      from = gradesChinese[i];
-      to = gradesChinese[i + 1];
-
-      labelsChinese.push(
-        '<i style="background:' + getChineseColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getChineseColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getChineseColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsChinese.join('<br>');
-    } 
-
-  else if (eventLayer.name === "Korean - Speak English Less Than 'Very Well'") {
-
-    var gradesKorean = [0, 0.5, 2, 5],
-        labelsKorean = [],
-        from, to;
-
-    for (var i = 0; i < gradesKorean.length; i++) {
-      from = gradesKorean[i];
-      to = gradesKorean[i + 1];
-
-      labelsKorean.push(
-        '<i style="background:' + getKoreanColor(from + 0.1, "NTA") + '"></i> ' +
-        from + (to ? '% &ndash; ' + to + '%' : '% +') );
-    }
-
-    legend.getContainer().innerHTML = "<h5>" + eventLayer.name + "</h5>" + '<i style= "outline: black dashed thin; border:thin black dashed"></i>' + 'Community District' + '<br>' + '<i style="background:' + getKoreanColor(0, "Airport/Non-Park") + '"></i> ' + 'Airports/Navy Yards' + '<br>' + '<i style="background:' + getKoreanColor(0, "Parks") + '"></i> ' + 'Parks/Open Space/Cemetery' + '<br><br>' + labelsKorean.join('<br>');
-    }  
-
-});
-
-// var layerUrl = 'http://documentation.cartodb.com/api/v2/viz/236085de-ea08-11e2-958c-5404a6a683d5/viz.json';
-
-// cartodb.createLayer(map, layerUrl)
-//   .addTo(map)
-//   .on('done', function(layer) {
-
-//   }).on('error', function() {
-//     //log the error
+// function initMap() {
+//   // Create a map object and specify the DOM element for display.
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 40.7127, lng: -74.0059},
+//     zoom: 11
 //   });
 
-// nv.addGraph(function() {
-//   var ntaChart = nv.models.discreteBarChart()
-//       .x(function(d) { return d.label })    //Specify the data accessors.
-//       .y(function(d) { return d.value })
-//       .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
-//       .tooltips(false)        //Don't show tooltips
-//       .showValues(true)       //...instead, show the bar value right on top of each bar.
-//       // .transitionDuration(350)
-//       ;
-
-//   d3.select('#ntaChart svg')
-//       .datum(exampleData())
-//       .call(ntaChart);
-
-//   nv.utils.windowResize(ntaChart.update);
-
-//   return ntaChart;
-// });
-
-// //Each bar represents a single discrete quantity.
-// function exampleData() {
-//  return  [ 
-//     {
-//       key: "Cumulative Return",
-//       values: [
-//         { 
-//           "label" : "Top" ,
-//           "value" : 29.765957771107
-//         } , 
-//         { 
-//           "label" : "Second" , 
-//           "value" : 22
-//         } , 
-//         { 
-//           "label" : "Third" , 
-//           "value" : 32.807804682612
-//         } , 
-//         { 
-//           "label" : "Fourth" , 
-//           "value" : 12.945946739256
-//         } , 
-//         { 
-//           "label" : "Fifth" ,
-//           "value" : 19.434030906893
-//         } 
-//       ]
-//     }
-//   ]
+//   var transitLayer = new google.maps.TransitLayer();
+//   transitLayer.setMap(map);
 
 // }
+
+// // Create a searchbox in order to execute a places search
+// var searchBox = new google.maps.places.SearchBox(
+//     document.getElementById('places-search'));
+// // Bias the searchbox to within the bounds of the map.
+// searchBox.setBounds(map.getBounds());
+
+
+var map;
+
+// Create a new blank array for all the listing markers.
+var markers = [];
+
+// This global polygon variable is to ensure only ONE polygon is rendered.
+var polygon = null;
+
+// Create placemarkers array to use in multiple functions to have control
+// over the number of places that show.
+var placeMarkers = [];
+
+function initMap() {
+
+// Constructor creates a new map - only center and zoom are required.
+map = new google.maps.Map(document.getElementById('map'), {
+  center: {lat: 40.7413549, lng: -73.9980244},
+  zoom: 11,
+  // styles: styles,
+  mapTypeControl: false
+});
+
+var transitLayer = new google.maps.TransitLayer();
+transitLayer.setMap(map);
+
+// This autocomplete is for use in the search within time entry box.
+var timeAutocomplete = new google.maps.places.Autocomplete(
+    document.getElementById('search-within-time-text'));
+// This autocomplete is for use in the geocoder entry box.
+var zoomAutocomplete = new google.maps.places.Autocomplete(
+    document.getElementById('zoom-to-area-text'));
+// Bias the boundaries within the map for the zoom to area text.
+zoomAutocomplete.bindTo('bounds', map);
+// Create a searchbox in order to execute a places search
+var searchBox = new google.maps.places.SearchBox(
+    document.getElementById('places-search'));
+// Bias the searchbox to within the bounds of the map.
+searchBox.setBounds(map.getBounds());
+
+// These are the real estate listings that will be shown to the user.
+// Normally we'd have these in a database instead.
+var locations = [
+  {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
+  {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
+  {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
+  {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
+  {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
+  {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
+];
+
+var largeInfowindow = new google.maps.InfoWindow();
+
+// Initialize the drawing manager.
+var drawingManager = new google.maps.drawing.DrawingManager({
+  drawingMode: google.maps.drawing.OverlayType.POLYGON,
+  drawingControl: true,
+  drawingControlOptions: {
+    position: google.maps.ControlPosition.TOP_LEFT,
+    drawingModes: [
+      google.maps.drawing.OverlayType.POLYGON
+    ]
+  }
+});
+
+// Style the markers a bit. This will be our listing marker icon.
+var defaultIcon = makeMarkerIcon('0091ff');
+
+// Create a "highlighted location" marker color for when the user
+// mouses over the marker.
+var highlightedIcon = makeMarkerIcon('FFFF24');
+
+// The following group uses the location array to create an array of markers on initialize.
+for (var i = 0; i < locations.length; i++) {
+  // Get the position from the location array.
+  var position = locations[i].location;
+  var title = locations[i].title;
+  // Create a marker per location, and put into markers array.
+  var marker = new google.maps.Marker({
+    position: position,
+    title: title,
+    animation: google.maps.Animation.DROP,
+    icon: defaultIcon,
+    id: i
+  });
+  // Push the marker to our array of markers.
+  markers.push(marker);
+  // Create an onclick event to open the large infowindow at each marker.
+  marker.addListener('click', function() {
+    populateInfoWindow(this, largeInfowindow);
+  });
+  // Two event listeners - one for mouseover, one for mouseout,
+  // to change the colors back and forth.
+  marker.addListener('mouseover', function() {
+    this.setIcon(highlightedIcon);
+  });
+  marker.addListener('mouseout', function() {
+    this.setIcon(defaultIcon);
+  });
+}
+
+// document.getElementById('zoom-to-area').addEventListener('click', function() {
+//   zoomToArea();
+// });
+
+// document.getElementById('search-within-time').addEventListener('click', function() {
+//   searchWithinTime();
+// });
+
+// Listen for the event fired when the user selects a prediction from the
+// picklist and retrieve more details for that place.
+searchBox.addListener('places_changed', function() {
+  searchBoxPlaces(this);
+});
+
+// Listen for the event fired when the user selects a prediction and clicks
+// "go" more details for that place.
+document.getElementById('go-places').addEventListener('click', textSearchPlaces);
+
+// Add an event listener so that the polygon is captured,  call the
+// searchWithinPolygon function. This will show the markers in the polygon,
+// and hide any outside of it.
+drawingManager.addListener('overlaycomplete', function(event) {
+  // First, check if there is an existing polygon.
+  // If there is, get rid of it and remove the markers
+  if (polygon) {
+    polygon.setMap(null);
+    hideMarkers(markers);
+  }
+  // Switching the drawing mode to the HAND (i.e., no longer drawing).
+  drawingManager.setDrawingMode(null);
+  // Creating a new editable polygon from the overlay.
+  polygon = event.overlay;
+  polygon.setEditable(true);
+  // Searching within the polygon.
+  searchWithinPolygon(polygon);
+  // Make sure the search is re-done if the poly is changed.
+  polygon.getPath().addListener('set_at', searchWithinPolygon);
+  polygon.getPath().addListener('insert_at', searchWithinPolygon);
+});
+}
+
+// This function populates the infowindow when the marker is clicked. We'll only allow
+// one infowindow which will open at the marker that is clicked, and populate based
+// on that markers position.
+function populateInfoWindow(marker, infowindow) {
+// Check to make sure the infowindow is not already opened on this marker.
+if (infowindow.marker != marker) {
+  // Clear the infowindow content to give the streetview time to load.
+  infowindow.setContent('');
+  infowindow.marker = marker;
+  // Make sure the marker property is cleared if the infowindow is closed.
+  infowindow.addListener('closeclick', function() {
+    infowindow.marker = null;
+  });
+  var streetViewService = new google.maps.StreetViewService();
+  var radius = 50;
+  // In case the status is OK, which means the pano was found, compute the
+  // position of the streetview image, then calculate the heading, then get a
+  // panorama from that and set the options
+  function getStreetView(data, status) {
+    if (status == google.maps.StreetViewStatus.OK) {
+      var nearStreetViewLocation = data.location.latLng;
+      var heading = google.maps.geometry.spherical.computeHeading(
+        nearStreetViewLocation, marker.position);
+        infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+        var panoramaOptions = {
+          position: nearStreetViewLocation,
+          pov: {
+            heading: heading,
+            pitch: 30
+          }
+        };
+      var panorama = new google.maps.StreetViewPanorama(
+        document.getElementById('pano'), panoramaOptions);
+    } else {
+      infowindow.setContent('<div>' + marker.title + '</div>' +
+        '<div>No Street View Found</div>');
+    }
+  }
+  // Use streetview service to get the closest streetview image within
+  // 50 meters of the markers position
+  streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+  // Open the infowindow on the correct marker.
+  infowindow.open(map, marker);
+}
+}
+
+// This function will loop through the markers array and display them all.
+function showListings() {
+var bounds = new google.maps.LatLngBounds();
+// Extend the boundaries of the map for each marker and display the marker
+for (var i = 0; i < markers.length; i++) {
+  markers[i].setMap(map);
+  bounds.extend(markers[i].position);
+}
+map.fitBounds(bounds);
+}
+
+// This function will loop through the listings and hide them all.
+function hideMarkers(markers) {
+for (var i = 0; i < markers.length; i++) {
+  markers[i].setMap(null);
+}
+}
+
+// This function takes in a COLOR, and then creates a new marker
+// icon of that color. The icon will be 21 px wide by 34 high, have an origin
+// of 0, 0 and be anchored at 10, 34).
+function makeMarkerIcon(markerColor) {
+var markerImage = new google.maps.MarkerImage(
+  'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+  '|40|_|%E2%80%A2',
+  new google.maps.Size(21, 34),
+  new google.maps.Point(0, 0),
+  new google.maps.Point(10, 34),
+  new google.maps.Size(21,34));
+return markerImage;
+}
+
+// This shows and hides (respectively) the drawing options.
+function toggleDrawing(drawingManager) {
+if (drawingManager.map) {
+  drawingManager.setMap(null);
+  // In case the user drew anything, get rid of the polygon
+  if (polygon !== null) {
+    polygon.setMap(null);
+  }
+} else {
+  drawingManager.setMap(map);
+}
+}
+
+// This function hides all markers outside the polygon,
+// and shows only the ones within it. This is so that the
+// user can specify an exact area of search.
+function searchWithinPolygon() {
+for (var i = 0; i < markers.length; i++) {
+  if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
+    markers[i].setMap(map);
+  } else {
+    markers[i].setMap(null);
+  }
+}
+}
+
+// This function takes the input value in the find nearby area text input
+// locates it, and then zooms into that area. This is so that the user can
+// show all listings, then decide to focus on one area of the map.
+function zoomToArea() {
+// Initialize the geocoder.
+var geocoder = new google.maps.Geocoder();
+// Get the address or place that the user entered.
+var address = document.getElementById('zoom-to-area-text').value;
+// Make sure the address isn't blank.
+if (address == '') {
+  window.alert('You must enter an area, or address.');
+} else {
+  // Geocode the address/area entered to get the center. Then, center the map
+  // on it and zoom in
+  geocoder.geocode(
+    { address: address,
+      componentRestrictions: {locality: 'New York'}
+    }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(15);
+      } else {
+        window.alert('We could not find that location - try entering a more' +
+            ' specific place.');
+      }
+    });
+  }
+}
+
+// This function allows the user to input a desired travel time, in
+// minutes, and a travel mode, and a location - and only show the listings
+// that are within that travel time (via that travel mode) of the location
+function searchWithinTime() {
+// Initialize the distance matrix service.
+var distanceMatrixService = new google.maps.DistanceMatrixService;
+var address = document.getElementById('search-within-time-text').value;
+// Check to make sure the place entered isn't blank.
+if (address == '') {
+  window.alert('You must enter an address.');
+} else {
+  hideMarkers(markers);
+  // Use the distance matrix service to calculate the duration of the
+  // routes between all our markers, and the destination address entered
+  // by the user. Then put all the origins into an origin matrix.
+  var origins = [];
+  for (var i = 0; i < markers.length; i++) {
+    origins[i] = markers[i].position;
+  }
+  var destination = address;
+  var mode = document.getElementById('mode').value;
+  // Now that both the origins and destination are defined, get all the
+  // info for the distances between them.
+  distanceMatrixService.getDistanceMatrix({
+    origins: origins,
+    destinations: [destination],
+    travelMode: google.maps.TravelMode[mode],
+    unitSystem: google.maps.UnitSystem.IMPERIAL,
+  }, function(response, status) {
+    if (status !== google.maps.DistanceMatrixStatus.OK) {
+      window.alert('Error was: ' + status);
+    } else {
+      displayMarkersWithinTime(response);
+    }
+  });
+}
+}
+
+// This function will go through each of the results, and,
+// if the distance is LESS than the value in the picker, show it on the map.
+function displayMarkersWithinTime(response) {
+var maxDuration = document.getElementById('max-duration').value;
+var origins = response.originAddresses;
+var destinations = response.destinationAddresses;
+// Parse through the results, and get the distance and duration of each.
+// Because there might be  multiple origins and destinations we have a nested loop
+// Then, make sure at least 1 result was found.
+var atLeastOne = false;
+for (var i = 0; i < origins.length; i++) {
+  var results = response.rows[i].elements;
+  for (var j = 0; j < results.length; j++) {
+    var element = results[j];
+    if (element.status === "OK") {
+      // The distance is returned in feet, but the TEXT is in miles. If we wanted to switch
+      // the function to show markers within a user-entered DISTANCE, we would need the
+      // value for distance, but for now we only need the text.
+      var distanceText = element.distance.text;
+      // Duration value is given in seconds so we make it MINUTES. We need both the value
+      // and the text.
+      var duration = element.duration.value / 60;
+      var durationText = element.duration.text;
+      if (duration <= maxDuration) {
+        //the origin [i] should = the markers[i]
+        markers[i].setMap(map);
+        atLeastOne = true;
+        // Create a mini infowindow to open immediately and contain the
+        // distance and duration
+        var infowindow = new google.maps.InfoWindow({
+          content: durationText + ' away, ' + distanceText +
+            '<div><input type=\"button\" value=\"View Route\" onclick =' +
+            '\"displayDirections(&quot;' + origins[i] + '&quot;);\"></input></div>'
+        });
+        infowindow.open(map, markers[i]);
+        // Put this in so that this small window closes if the user clicks
+        // the marker, when the big infowindow opens
+        markers[i].infowindow = infowindow;
+        google.maps.event.addListener(markers[i], 'click', function() {
+          this.infowindow.close();
+        });
+      }
+    }
+  }
+}
+if (!atLeastOne) {
+  window.alert('We could not find any locations within that distance!');
+}
+}
+
+// This function is in response to the user selecting "show route" on one
+// of the markers within the calculated distance. This will display the route
+// on the map.
+function displayDirections(origin) {
+hideMarkers(markers);
+var directionsService = new google.maps.DirectionsService;
+// Get the destination address from the user entered value.
+var destinationAddress =
+    document.getElementById('search-within-time-text').value;
+// Get mode again from the user entered value.
+var mode = document.getElementById('mode').value;
+directionsService.route({
+  // The origin is the passed in marker's position.
+  origin: origin,
+  // The destination is user entered address.
+  destination: destinationAddress,
+  travelMode: google.maps.TravelMode[mode]
+}, function(response, status) {
+  if (status === google.maps.DirectionsStatus.OK) {
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+      map: map,
+      directions: response,
+      draggable: true,
+      polylineOptions: {
+        strokeColor: 'green'
+      }
+    });
+  } else {
+    window.alert('Directions request failed due to ' + status);
+  }
+});
+}
+
+// This function fires when the user selects a searchbox picklist item.
+// It will do a nearby search using the selected query string or place.
+function searchBoxPlaces(searchBox) {
+hideMarkers(placeMarkers);
+var places = searchBox.getPlaces();
+if (places.length == 0) {
+  window.alert('We did not find any places matching that search!');
+} else {
+// For each place, get the icon, name and location.
+  createMarkersForPlaces(places);
+}
+}
+
+// This function firest when the user select "go" on the places search.
+// It will do a nearby search using the entered query string or place.
+function textSearchPlaces() {
+var bounds = map.getBounds();
+hideMarkers(placeMarkers);
+var placesService = new google.maps.places.PlacesService(map);
+placesService.textSearch({
+  query: document.getElementById('places-search').value,
+  bounds: bounds
+}, function(results, status) {
+  if (status === google.maps.places.PlacesServiceStatus.OK) {
+    createMarkersForPlaces(results);
+  }
+});
+}
+
+// This function creates markers for each place found in either places search.
+function createMarkersForPlaces(places) {
+var bounds = new google.maps.LatLngBounds();
+for (var i = 0; i < places.length; i++) {
+  var place = places[i];
+  var icon = {
+    url: place.icon,
+    size: new google.maps.Size(35, 35),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(15, 34),
+    scaledSize: new google.maps.Size(25, 25)
+  };
+  // Create a marker for each place.
+  var marker = new google.maps.Marker({
+    map: map,
+    icon: icon,
+    title: place.name,
+    position: place.geometry.location,
+    id: place.place_id
+  });
+  // Create a single infowindow to be used with the place details information
+  // so that only one is open at once.
+  var placeInfoWindow = new google.maps.InfoWindow();
+  // If a marker is clicked, do a place details search on it in the next function.
+  marker.addListener('click', function() {
+    if (placeInfoWindow.marker == this) {
+      console.log("This infowindow already is on this marker!");
+    } else {
+      getPlacesDetails(this, placeInfoWindow);
+    }
+  });
+  placeMarkers.push(marker);
+  if (place.geometry.viewport) {
+    // Only geocodes have viewport.
+    bounds.union(place.geometry.viewport);
+  } else {
+    bounds.extend(place.geometry.location);
+  }
+}
+map.fitBounds(bounds);
+}
+
+// This is the PLACE DETAILS search - it's the most detailed so it's only
+// executed when a marker is selected, indicating the user wants more
+// details about that place.
+function getPlacesDetails(marker, infowindow) {
+var service = new google.maps.places.PlacesService(map);
+service.getDetails({
+placeId: marker.id
+}, function(place, status) {
+if (status === google.maps.places.PlacesServiceStatus.OK) {
+  // Set the marker property on this infowindow so it isn't created again.
+  infowindow.marker = marker;
+  var innerHTML = '<div>';
+  if (place.name) {
+    innerHTML += '<strong>' + place.name + '</strong>';
+  }
+  if (place.formatted_address) {
+    innerHTML += '<br>' + place.formatted_address;
+  }
+  if (place.formatted_phone_number) {
+    innerHTML += '<br>' + place.formatted_phone_number;
+  }
+  if (place.opening_hours) {
+    innerHTML += '<br><br><strong>Hours:</strong><br>' +
+        place.opening_hours.weekday_text[0] + '<br>' +
+        place.opening_hours.weekday_text[1] + '<br>' +
+        place.opening_hours.weekday_text[2] + '<br>' +
+        place.opening_hours.weekday_text[3] + '<br>' +
+        place.opening_hours.weekday_text[4] + '<br>' +
+        place.opening_hours.weekday_text[5] + '<br>' +
+        place.opening_hours.weekday_text[6];
+  }
+  if (place.photos) {
+    innerHTML += '<br><br><img src="' + place.photos[0].getUrl(
+        {maxHeight: 100, maxWidth: 200}) + '">';
+  }
+  innerHTML += '</div>';
+  infowindow.setContent(innerHTML);
+  infowindow.open(map, marker);
+  // Make sure the marker property is cleared if the infowindow is closed.
+  infowindow.addListener('closeclick', function() {
+    infowindow.marker = null;
+  });
+}
+});
+}

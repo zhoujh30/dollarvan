@@ -5,28 +5,13 @@ html, body, #container {
 }
 
 body {
-  padding-top: 50px;
+  padding-top: 60px;
 }
 
-#map {
-  width: auto;
-  height: 100%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.55);
-}
-
-#sidebar {
-  width: 300px;
-  height: 100%;
-  max-width: 100%;
-  float: left;
-  -webkit-transition: all 0.25s ease-out;
-  -moz-transition: all 0.25s ease-out;
-  transition: all 0.25s ease-out;
-}
 
 .navbar .navbar-brand {
   font-weight: bold;
-  font-size: 25px;
+  font-size: 20px;
   color: #FFFFFF;
 }
 
@@ -38,79 +23,80 @@ body {
   color: #fff;
 }
 
-.info {
-  width: 410px;
-  height: 30px;
-  padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  border-radius: 5px;
+
+.container {
+  height: 100%;
+  position: relative;
+}
+
+input {
+  font-size: 12px;
+}
+
+h1 {
+  color: #525454;
+  font-size: 22px;
+  margin: 0 0 10px 0;
   text-align: center;
 }
 
-.info h5 {
-  margin: 0 0 10px;
-  text-align: center;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  font-weight: bold;
+#hide-listings,
+#show-listings {
+  width: 48%;
 }
 
-.info i {
-  width: 18px;
-  height: 18px;
-  float: left;
-  margin-right: 20px;
-  margin-left: 50px;
-  opacity: 0.5;
-  outline: gray solid thin;
-  margin-top: 5px;
+hr {
+  background: #D0D7D9;
+  height: 1px;
+  margin: 20px 0 20px 0;
+  border: none;
 }
 
-.click {
-  width: 410px;
-  height: 375px;
-  /*height: 175px;*/
-  padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  border-radius: 5px;
-  text-align: center;
+#map {
+  width: auto;
+  /*box-shadow: 0 0 10px rgba(0,0,0,0.55);*/
+  bottom:0px;
+  width:100%;
+  height: 100%;
+  position: absolute;
 }
 
-.click h5 {
-  margin: 0 0 5px;
-  text-align: center;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  font-weight: bold;
-}
-
-.legend {
-  width: 410px;
-  height: 194px;
+.options-box {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  height: 100%;
+  line-height: 35px;
+  padding: 10px 10px 30px 10px;
   text-align: left;
-  line-height: 18px;
+  width: 340px;
 }
 
-.legend i {
-  width: 18px;
-  height: 18px;
-  float: left;
-  margin-right: 20px;
-  margin-left: 50px;
-  margin-top: auto;
-  opacity: 0.5;
-  outline: gray solid thin;
+#pano {
+  width: 200px;
+  height: 200px;
 }
 
-/*.nvd3 rect{
-      display: none !important;
-}*/
+#places-search,
+#search-within-time-text {
+  width: 84%;
+}
 
+.text {
+  font-size: 12px;
+}
 
+#toggle-drawing {
+  width: 27%;
+  position: relative;
+  margin-left: 10px;
+}
+
+#zoom-to-area-text {
+  width: 70%;
+}
+
+#zoom-to-area {
+  width: 24%;
+}
 
