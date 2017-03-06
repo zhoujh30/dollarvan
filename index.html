@@ -1,106 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dollar Van NYC</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-
-  <title>Dollar Van NYC</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script> -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-XYCjB+hFAjSbgf9yKUgbysEjaVLOXhCgATTEBpCqT1R3jvG5LGRAK5ZIyRbH5vpX" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" /> -->
-  <link rel="stylesheet" href="css/nvd3.css" />
-  <link rel="stylesheet" href="css/style.css">
-  
-</head>
-
-<body>
-  <nav class="navbar navbar-default navbar-fixed-top" style="height: 60px;">
-    <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand mybutton" href="#top">Dollar Van NYC</a>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li><a href="" data-toggle="modal" data-target="#about">About</a></li>
-          <li><a href="" data-toggle="modal" data-target="#contact">Contact</a></li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-
-
-<!-- Modal -->
-  <div id="about" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">About</h4>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-XYCjB+hFAjSbgf9yKUgbysEjaVLOXhCgATTEBpCqT1R3jvG5LGRAK5ZIyRbH5vpX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top" style="height: 30px;">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand mybutton">Dollar Van NYC</a>
         </div>
-        <div class="modal-body">
-          Dollar Van NYC.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
 
-    </div>
-  </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Routes<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Chinatown</a></li>
+                <li><a href="#">Flatbush</a></li>
+                <li><a href="#">Eastern Queens</a></li>
+                <li><a href="#">Eastern New Jersey</a></li>
+                <li><a href="#">Edenwald</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-left">
+            <div class="form-group" style="width: 300px;">
+              <input id="places-search" type="text" class="form-control" placeholder="Address">
+            </div>
+            <button id="go-places" value="Go" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="" data-toggle="modal" data-target="#about">About</a></li>
+            <li><a href="" data-toggle="modal" data-target="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">English</a></li>
+                <li><a href="#">Español</a></li>
+                <li><a href="#">中文</a></li>
+                <li><a href="#">franse kreyòl</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
 
   <!-- Modal -->
-  <div id="contact" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div id="about" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">About</h4>
+          </div>
+          <div class="modal-body">
+            Dollar Van NYC.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
 
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Contact</h4>
-        </div>
-        <div class="modal-body">
-          For any inquiries, email us at <a href="mailto:zhoujh42@gmail.com">zhoujh42@gmail.com</a>.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="contact" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Contact</h4>
+          </div>
+          <div class="modal-body">
+            For any inquiries, email us at <a href="mailto:zhoujh42@gmail.com">zhoujh42@gmail.com</a>.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
-
     </div>
-  </div>
 
-
- <div id="container">
-      <div id="sidebar">
-        <div id='ntaChart'><svg></svg></div>
+    <div id="map"></div>
+<!--     <div class="container">
+      <div class="options-box">
+        <div>
+          <input id="zoom-to-area-text" type="text" placeholder="Enter your favorite area!">
+          <input id="zoom-to-area" type="button" value="Zoom">
+        </div>
+        <hr>
+        <div>
+          <span class="text"> Within </span>
+          <select id="max-duration">
+            <option value="10">10 min</option>
+            <option value="15">15 min</option>
+            <option value="30">30 min</option>
+            <option value="60">1 hour</option>
+          </select>
+          <select id="mode">
+            <option value="DRIVING">drive</option>
+            <option value="WALKING">walk</option>
+            <option value="BICYCLING">bike</option>
+            <option value="TRANSIT">transit ride</option>
+          </select>
+          <span class="text">of</span>
+          <input id="search-within-time-text" type="text" placeholder="Ex: Google Office NYC or 75 9th Ave, New York, NY">
+          <input id="search-within-time" type="button" value="Go">
+        </div>
+        <hr>
+        <div>
+          <span class="text">Search for places</span>
+          <input id="places-search" type="text" placeholder="Enter street name, address, or neighborhood">
+          <input id="go-places" type="button" value="Go">
+        </div>
       </div>
       <div id="map"></div>
-</div>
-  
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMxGbmxGwQOKZTFOhIsJ4z3BGFQ7gsSJ8&callback=initMap"
-    async defer></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.3/nv.d3.js"></script>
-  <script src="js/javascript.js"></script> 
+    </div> -->
 
-  
- 
-</body>
+    <script src="js/javascript.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> 
+    <script async defer
+        src=
+        "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBMxGbmxGwQOKZTFOhIsJ4z3BGFQ7gsSJ8&v=3&callback=initMap">
+    </script>
+
+  </body>
 </html>

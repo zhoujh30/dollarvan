@@ -5,24 +5,9 @@ html, body, #container {
 }
 
 body {
-  padding-top: 50px;
+  padding-top: 60px;
 }
 
-#map {
-  width: auto;
-  height: 100%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.55);
-}
-
-#sidebar {
-  width: 250px;
-  height: 100%;
-  max-width: 100%;
-  float: left;
-  -webkit-transition: all 0.25s ease-out;
-  -moz-transition: all 0.25s ease-out;
-  transition: all 0.25s ease-out;
-}
 
 .navbar .navbar-brand {
   font-weight: bold;
@@ -39,8 +24,79 @@ body {
 }
 
 
-/*.navbar {
-  min-height:20px !important；
+.container {
+  height: 100%;
+  position: relative;
 }
-*/
+
+input {
+  font-size: 12px;
+}
+
+h1 {
+  color: #525454;
+  font-size: 22px;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+#hide-listings,
+#show-listings {
+  width: 48%;
+}
+
+hr {
+  background: #D0D7D9;
+  height: 1px;
+  margin: 20px 0 20px 0;
+  border: none;
+}
+
+#map {
+  width: auto;
+  /*box-shadow: 0 0 10px rgba(0,0,0,0.55);*/
+  bottom:0px;
+  width:100%;
+  height: 100%;
+  position: absolute;
+}
+
+.options-box {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 3px;
+  height: 100%;
+  line-height: 35px;
+  padding: 10px 10px 30px 10px;
+  text-align: left;
+  width: 340px;
+}
+
+#pano {
+  width: 200px;
+  height: 200px;
+}
+
+#places-search,
+#search-within-time-text {
+  width: 84%;
+}
+
+.text {
+  font-size: 12px;
+}
+
+#toggle-drawing {
+  width: 27%;
+  position: relative;
+  margin-left: 10px;
+}
+
+#zoom-to-area-text {
+  width: 70%;
+}
+
+#zoom-to-area {
+  width: 24%;
+}
 
