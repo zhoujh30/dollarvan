@@ -41,9 +41,10 @@
           </ul>
           <form class="navbar-form navbar-left">
             <div class="form-group" style="width: 300px;">
-              <input id="places-search" type="text" class="form-control" placeholder="Address">
+              <input id="places-search" type="text" class="form-control" placeholder="Search places">
             </div>
-            <button id="go-places" value="Go" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            <input id="go-places" type="button" value="Search">
+          <!--   <button id="go-places" value="Go" type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button> -->
           </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="" data-toggle="modal" data-target="#about">About</a></li>
@@ -141,7 +142,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> 
     <script async defer
         src=
-        "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBMxGbmxGwQOKZTFOhIsJ4z3BGFQ7gsSJ8&v=3&callback=initMap">
+        "https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyBMxGbmxGwQOKZTFOhIsJ4z3BGFQ7gsSJ8&v=3&callback=initMap">
     </script>
 
   </body>

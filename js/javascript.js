@@ -1,23 +1,4 @@
 
-// function initMap() {
-//   // Create a map object and specify the DOM element for display.
-//   var map = new google.maps.Map(document.getElementById('map'), {
-//     center: {lat: 40.7127, lng: -74.0059},
-//     zoom: 11
-//   });
-
-//   var transitLayer = new google.maps.TransitLayer();
-//   transitLayer.setMap(map);
-
-// }
-
-// // Create a searchbox in order to execute a places search
-// var searchBox = new google.maps.places.SearchBox(
-//     document.getElementById('places-search'));
-// // Bias the searchbox to within the bounds of the map.
-// searchBox.setBounds(map.getBounds());
-
-
 var map;
 
 // Create a new blank array for all the listing markers.
@@ -59,28 +40,16 @@ searchBox.setBounds(map.getBounds());
 
 // These are the real estate listings that will be shown to the user.
 // Normally we'd have these in a database instead.
-var locations = [
-  {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
-  {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
-  {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
-  {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
-  {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
-  {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
-];
+// var locations = [
+//   {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
+//   {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
+//   {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
+//   {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
+//   {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
+//   {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
+// ];
 
 var largeInfowindow = new google.maps.InfoWindow();
-
-// Initialize the drawing manager.
-var drawingManager = new google.maps.drawing.DrawingManager({
-  drawingMode: google.maps.drawing.OverlayType.POLYGON,
-  drawingControl: true,
-  drawingControlOptions: {
-    position: google.maps.ControlPosition.TOP_LEFT,
-    drawingModes: [
-      google.maps.drawing.OverlayType.POLYGON
-    ]
-  }
-});
 
 // Style the markers a bit. This will be our listing marker icon.
 var defaultIcon = makeMarkerIcon('0091ff');
@@ -90,33 +59,61 @@ var defaultIcon = makeMarkerIcon('0091ff');
 var highlightedIcon = makeMarkerIcon('FFFF24');
 
 // The following group uses the location array to create an array of markers on initialize.
-for (var i = 0; i < locations.length; i++) {
-  // Get the position from the location array.
-  var position = locations[i].location;
-  var title = locations[i].title;
-  // Create a marker per location, and put into markers array.
-  var marker = new google.maps.Marker({
-    position: position,
-    title: title,
-    animation: google.maps.Animation.DROP,
-    icon: defaultIcon,
-    id: i
-  });
-  // Push the marker to our array of markers.
-  markers.push(marker);
-  // Create an onclick event to open the large infowindow at each marker.
-  marker.addListener('click', function() {
-    populateInfoWindow(this, largeInfowindow);
-  });
-  // Two event listeners - one for mouseover, one for mouseout,
-  // to change the colors back and forth.
-  marker.addListener('mouseover', function() {
-    this.setIcon(highlightedIcon);
-  });
-  marker.addListener('mouseout', function() {
-    this.setIcon(defaultIcon);
-  });
-}
+// for (var i = 0; i < locations.length; i++) {
+//   // Get the position from the location array.
+//   var position = locations[i].location;
+//   var title = locations[i].title;
+//   // Create a marker per location, and put into markers array.
+//   var marker = new google.maps.Marker({
+//     position: position,
+//     title: title,
+//     animation: google.maps.Animation.DROP,
+//     icon: defaultIcon,
+//     id: i
+//   });
+//   // Push the marker to our array of markers.
+//   markers.push(marker);
+//   // Create an onclick event to open the large infowindow at each marker.
+//   marker.addListener('click', function() {
+//     populateInfoWindow(this, largeInfowindow);
+//   });
+//   // Two event listeners - one for mouseover, one for mouseout,
+//   // to change the colors back and forth.
+//   marker.addListener('mouseover', function() {
+//     this.setIcon(highlightedIcon);
+//   });
+//   marker.addListener('mouseout', function() {
+//     this.setIcon(defaultIcon);
+//   });
+// }
+
+// var infoWindow = new google.maps.InfoWindow({map: map});
+
+//     // Try HTML5 geolocation.
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(function(position) {
+//         var pos = {
+//           lat: position.coords.latitude,
+//           lng: position.coords.longitude
+//         };
+
+//         infoWindow.setPosition(pos);
+//         infoWindow.setContent('Location found.');
+//         map.setCenter(pos);
+//       }, function() {
+//         handleLocationError(true, infoWindow, map.getCenter());
+//       });
+//     } else {
+//       // Browser doesn't support Geolocation
+//       handleLocationError(false, infoWindow, map.getCenter());
+//     }
+//   }
+
+//   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+//     infoWindow.setPosition(pos);
+//     infoWindow.setContent(browserHasGeolocation ?
+//                           'Error: The Geolocation service failed.' :
+//                           'Error: Your browser doesn\'t support geolocation.');
 
 // document.getElementById('zoom-to-area').addEventListener('click', function() {
 //   zoomToArea();
@@ -136,27 +133,7 @@ searchBox.addListener('places_changed', function() {
 // "go" more details for that place.
 document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 
-// Add an event listener so that the polygon is captured,  call the
-// searchWithinPolygon function. This will show the markers in the polygon,
-// and hide any outside of it.
-drawingManager.addListener('overlaycomplete', function(event) {
-  // First, check if there is an existing polygon.
-  // If there is, get rid of it and remove the markers
-  if (polygon) {
-    polygon.setMap(null);
-    hideMarkers(markers);
-  }
-  // Switching the drawing mode to the HAND (i.e., no longer drawing).
-  drawingManager.setDrawingMode(null);
-  // Creating a new editable polygon from the overlay.
-  polygon = event.overlay;
-  polygon.setEditable(true);
-  // Searching within the polygon.
-  searchWithinPolygon(polygon);
-  // Make sure the search is re-done if the poly is changed.
-  polygon.getPath().addListener('set_at', searchWithinPolygon);
-  polygon.getPath().addListener('insert_at', searchWithinPolygon);
-});
+
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -235,19 +212,6 @@ var markerImage = new google.maps.MarkerImage(
   new google.maps.Point(10, 34),
   new google.maps.Size(21,34));
 return markerImage;
-}
-
-// This shows and hides (respectively) the drawing options.
-function toggleDrawing(drawingManager) {
-if (drawingManager.map) {
-  drawingManager.setMap(null);
-  // In case the user drew anything, get rid of the polygon
-  if (polygon !== null) {
-    polygon.setMap(null);
-  }
-} else {
-  drawingManager.setMap(map);
-}
 }
 
 // This function hides all markers outside the polygon,
@@ -447,17 +411,9 @@ function createMarkersForPlaces(places) {
 var bounds = new google.maps.LatLngBounds();
 for (var i = 0; i < places.length; i++) {
   var place = places[i];
-  var icon = {
-    url: place.icon,
-    size: new google.maps.Size(35, 35),
-    origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(15, 34),
-    scaledSize: new google.maps.Size(25, 25)
-  };
   // Create a marker for each place.
   var marker = new google.maps.Marker({
     map: map,
-    icon: icon,
     title: place.name,
     position: place.geometry.location,
     id: place.place_id
