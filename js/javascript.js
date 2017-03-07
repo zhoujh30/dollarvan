@@ -70,18 +70,6 @@ var locations = [
 
 var largeInfowindow = new google.maps.InfoWindow();
 
-// Initialize the drawing manager.
-var drawingManager = new google.maps.drawing.DrawingManager({
-  drawingMode: google.maps.drawing.OverlayType.POLYGON,
-  drawingControl: true,
-  drawingControlOptions: {
-    position: google.maps.ControlPosition.TOP_LEFT,
-    drawingModes: [
-      google.maps.drawing.OverlayType.POLYGON
-    ]
-  }
-});
-
 // Style the markers a bit. This will be our listing marker icon.
 var defaultIcon = makeMarkerIcon('0091ff');
 
@@ -136,27 +124,7 @@ searchBox.addListener('places_changed', function() {
 // "go" more details for that place.
 document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 
-// Add an event listener so that the polygon is captured,  call the
-// searchWithinPolygon function. This will show the markers in the polygon,
-// and hide any outside of it.
-drawingManager.addListener('overlaycomplete', function(event) {
-  // First, check if there is an existing polygon.
-  // If there is, get rid of it and remove the markers
-  if (polygon) {
-    polygon.setMap(null);
-    hideMarkers(markers);
-  }
-  // Switching the drawing mode to the HAND (i.e., no longer drawing).
-  drawingManager.setDrawingMode(null);
-  // Creating a new editable polygon from the overlay.
-  polygon = event.overlay;
-  polygon.setEditable(true);
-  // Searching within the polygon.
-  searchWithinPolygon(polygon);
-  // Make sure the search is re-done if the poly is changed.
-  polygon.getPath().addListener('set_at', searchWithinPolygon);
-  polygon.getPath().addListener('insert_at', searchWithinPolygon);
-});
+
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -235,19 +203,6 @@ var markerImage = new google.maps.MarkerImage(
   new google.maps.Point(10, 34),
   new google.maps.Size(21,34));
 return markerImage;
-}
-
-// This shows and hides (respectively) the drawing options.
-function toggleDrawing(drawingManager) {
-if (drawingManager.map) {
-  drawingManager.setMap(null);
-  // In case the user drew anything, get rid of the polygon
-  if (polygon !== null) {
-    polygon.setMap(null);
-  }
-} else {
-  drawingManager.setMap(map);
-}
 }
 
 // This function hides all markers outside the polygon,
