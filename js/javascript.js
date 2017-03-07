@@ -1,23 +1,4 @@
 
-// function initMap() {
-//   // Create a map object and specify the DOM element for display.
-//   var map = new google.maps.Map(document.getElementById('map'), {
-//     center: {lat: 40.7127, lng: -74.0059},
-//     zoom: 11
-//   });
-
-//   var transitLayer = new google.maps.TransitLayer();
-//   transitLayer.setMap(map);
-
-// }
-
-// // Create a searchbox in order to execute a places search
-// var searchBox = new google.maps.places.SearchBox(
-//     document.getElementById('places-search'));
-// // Bias the searchbox to within the bounds of the map.
-// searchBox.setBounds(map.getBounds());
-
-
 var map;
 
 // Create a new blank array for all the listing markers.
@@ -59,14 +40,14 @@ searchBox.setBounds(map.getBounds());
 
 // These are the real estate listings that will be shown to the user.
 // Normally we'd have these in a database instead.
-var locations = [
-  {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
-  {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
-  {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
-  {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
-  {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
-  {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
-];
+// var locations = [
+//   {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
+//   {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
+//   {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
+//   {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
+//   {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
+//   {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
+// ];
 
 var largeInfowindow = new google.maps.InfoWindow();
 
@@ -78,33 +59,61 @@ var defaultIcon = makeMarkerIcon('0091ff');
 var highlightedIcon = makeMarkerIcon('FFFF24');
 
 // The following group uses the location array to create an array of markers on initialize.
-for (var i = 0; i < locations.length; i++) {
-  // Get the position from the location array.
-  var position = locations[i].location;
-  var title = locations[i].title;
-  // Create a marker per location, and put into markers array.
-  var marker = new google.maps.Marker({
-    position: position,
-    title: title,
-    animation: google.maps.Animation.DROP,
-    icon: defaultIcon,
-    id: i
-  });
-  // Push the marker to our array of markers.
-  markers.push(marker);
-  // Create an onclick event to open the large infowindow at each marker.
-  marker.addListener('click', function() {
-    populateInfoWindow(this, largeInfowindow);
-  });
-  // Two event listeners - one for mouseover, one for mouseout,
-  // to change the colors back and forth.
-  marker.addListener('mouseover', function() {
-    this.setIcon(highlightedIcon);
-  });
-  marker.addListener('mouseout', function() {
-    this.setIcon(defaultIcon);
-  });
-}
+// for (var i = 0; i < locations.length; i++) {
+//   // Get the position from the location array.
+//   var position = locations[i].location;
+//   var title = locations[i].title;
+//   // Create a marker per location, and put into markers array.
+//   var marker = new google.maps.Marker({
+//     position: position,
+//     title: title,
+//     animation: google.maps.Animation.DROP,
+//     icon: defaultIcon,
+//     id: i
+//   });
+//   // Push the marker to our array of markers.
+//   markers.push(marker);
+//   // Create an onclick event to open the large infowindow at each marker.
+//   marker.addListener('click', function() {
+//     populateInfoWindow(this, largeInfowindow);
+//   });
+//   // Two event listeners - one for mouseover, one for mouseout,
+//   // to change the colors back and forth.
+//   marker.addListener('mouseover', function() {
+//     this.setIcon(highlightedIcon);
+//   });
+//   marker.addListener('mouseout', function() {
+//     this.setIcon(defaultIcon);
+//   });
+// }
+
+var infoWindow = new google.maps.InfoWindow({map: map});
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+                          'Error: The Geolocation service failed.' :
+                          'Error: Your browser doesn\'t support geolocation.');
 
 // document.getElementById('zoom-to-area').addEventListener('click', function() {
 //   zoomToArea();
@@ -402,17 +411,9 @@ function createMarkersForPlaces(places) {
 var bounds = new google.maps.LatLngBounds();
 for (var i = 0; i < places.length; i++) {
   var place = places[i];
-  var icon = {
-    url: place.icon,
-    size: new google.maps.Size(35, 35),
-    origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(15, 34),
-    scaledSize: new google.maps.Size(25, 25)
-  };
   // Create a marker for each place.
   var marker = new google.maps.Marker({
     map: map,
-    icon: icon,
     title: place.name,
     position: place.geometry.location,
     id: place.place_id
