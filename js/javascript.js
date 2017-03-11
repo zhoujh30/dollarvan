@@ -18,7 +18,10 @@ map = new google.maps.Map(document.getElementById('map'), {
   center: {lat: 40.7413549, lng: -73.9980244},
   zoom: 11,
   // styles: styles,
-  mapTypeControl: false
+  mapTypeControl: true,
+  scaleControl: true,
+  streetViewControl: false,
+  rotateControl: true
 });
 
 var transitLayer = new google.maps.TransitLayer();
@@ -26,10 +29,10 @@ transitLayer.setMap(map);
 
 // This autocomplete is for use in the search within time entry box.
 var timeAutocomplete = new google.maps.places.Autocomplete(
-    document.getElementById('search-within-time-text'));
+    document.getElementById('places-search'));
 // This autocomplete is for use in the geocoder entry box.
 var zoomAutocomplete = new google.maps.places.Autocomplete(
-    document.getElementById('zoom-to-area-text'));
+    document.getElementById('places-search'));
 // Bias the boundaries within the map for the zoom to area text.
 zoomAutocomplete.bindTo('bounds', map);
 // Create a searchbox in order to execute a places search
@@ -106,8 +109,30 @@ searchBox.addListener('places_changed', function() {
 // "go" more details for that place.
 document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 
+//Add my location
+var myloc = new google.maps.Marker({
+    clickable: true,
+    icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+                                                    new google.maps.Size(22,22),
+                                                    new google.maps.Point(0,18),
+                                                    new google.maps.Point(11,11)),
+    shadow: null,
+    zIndex: 999,
+    // animation: google.maps.Animation.DROP,
+    map: map
+
+});
+
+if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+    var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+    myloc.setPosition(me);
+    map.setCenter(me);
+    map.setZoom(15);
+}, function(error) {
+});
 
 }
+
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
@@ -199,6 +224,9 @@ for (var i = 0; i < markers.length; i++) {
   }
 }
 }
+
+
+
 
 // This function takes the input value in the find nearby area text input
 // locates it, and then zooms into that area. This is so that the user can
