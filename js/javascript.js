@@ -129,9 +129,70 @@ if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos
     map.setCenter(me);
     map.setZoom(15);
 }, function(error) {
+    window.alert('We could not find your current location without your permission');
 });
 
+// change language
+
+var supportedLanguages = {
+  'en': 'ENGLISH',
+  'es': 'SPANISH',
+  'fr': 'FRENCH',
+  'zh-CN': 'CHINESE (SIMPLIFIED)',
+  'zh-TW': 'CHINESE (TRADITIONAL)'
+};
+
+var selectLanguage = document.getElementById('changelanguage');
+selectLanguage.options[0] = new Option(
+    'Choose language to load the map',
+    '', true, true);
+var i = 1;
+for (var langCode in supportedLanguages) {
+  var language = supportedLanguages[langCode];
+  selectLanguage.options[i] = new Option(language, langCode,
+      false, false);
+  i += 1;
 }
+selectLanguage.onchange = function() {
+  var langCode = this.options[this.selectedIndex].value;
+  if (langCode && supportedLanguages[langCode]) {
+    var currentLanguage = supportedLanguages[langCode];
+    // document.getElementById('chosen_lang').innerHTML += currentLanguage;
+    // document.getElementById('start_div').className = 'hidden';
+    // document.getElementById('map_div').className = 'visible';
+    // loadMap(langCode);
+    loadScript(langCode);
+  }
+};
+
+function loadScript(lang) {
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&language=ja&' +
+              'callback=initMap';
+          // if (lang) {
+          //     script.src += '&language=' + lang;
+          // }
+          
+          script.id = "google-maps-script";
+          document.body.appendChild(script);
+      }
+
+      // window.onload = loadScript;
+      
+// function ChangeGoogleMapsLanguage() {
+
+//           var lang = document.getElementById('language').value,
+//               oldScript = document.getElementById("google-maps-script");
+//           oldScript.parentNode.removeChild(oldScript);
+
+//           delete google.maps;
+          
+//           loadScript(lang);
+//       }
+
+}
+
 
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
