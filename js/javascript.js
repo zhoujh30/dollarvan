@@ -129,7 +129,7 @@ if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos
     map.setCenter(me);
     map.setZoom(15);
 }, function(error) {
-    window.alert('We could not find your current location without your permission');
+    // window.alert('We could not find your current location without your permission');
 });
 
 // change language
@@ -144,7 +144,7 @@ var supportedLanguages = {
 
 var selectLanguage = document.getElementById('changelanguage');
 selectLanguage.options[0] = new Option(
-    'Choose language to load the map',
+    'Language',
     '', true, true);
 var i = 1;
 for (var langCode in supportedLanguages) {
@@ -165,14 +165,14 @@ selectLanguage.onchange = function() {
   }
 };
 
-function loadScript(lang) {
+function loadScript(langcode) {
           var script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&language=ja&' +
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
               'callback=initMap';
-          // if (lang) {
-          //     script.src += '&language=' + lang;
-          // }
+          if (langcode) {
+              script.src += '&language=' + langcode;
+          }
           
           script.id = "google-maps-script";
           document.body.appendChild(script);
