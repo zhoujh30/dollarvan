@@ -137,7 +137,7 @@ if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos
 var supportedLanguages = {
   'en': 'ENGLISH',
   'es': 'SPANISH',
-  'fr': 'FRENCH',
+  'ja': 'JAPANESE',
   'zh-CN': 'CHINESE (SIMPLIFIED)',
   'zh-TW': 'CHINESE (TRADITIONAL)'
 };
