@@ -112,8 +112,7 @@ document.getElementById('go-places').addEventListener('click', textSearchPlaces)
 
 //Add routes
 var ChinatownRoutes = new google.maps.KmlLayer({
-          src: '../data/Chinatown Commuter Van Route Map.kml',
-          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+          url: 'zhoujh30.github.io/dollarvan/data/Chinatown%20Commuter%20Van%20Route%20Map.kml',
           map: map
         });
 
