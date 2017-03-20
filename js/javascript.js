@@ -175,7 +175,7 @@ selectLanguage.onchange = function() {
 function loadScript(langcode) {
           var script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBMxGbmxGwQOKZTFOhIsJ4z3BGFQ7gsSJ8&v=3&' +
               'callback=initMap';
           if (langcode) {
               script.src += '&language=' + langcode;
