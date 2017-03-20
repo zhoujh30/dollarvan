@@ -109,6 +109,14 @@ searchBox.addListener('places_changed', function() {
 // "go" more details for that place.
 document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 
+
+//Add routes
+var ChinatownRoutes = new google.maps.KmlLayer({
+          src: '../data/Chinatown Commuter Van Route Map.kml',
+          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+          map: map
+        });
+
 //Add my location
 var myloc = new google.maps.Marker({
     clickable: true,
