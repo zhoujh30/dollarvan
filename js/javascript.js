@@ -109,6 +109,14 @@ searchBox.addListener('places_changed', function() {
 // "go" more details for that place.
 document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 
+
+//Add routes
+var ChinatownRoutes = new google.maps.KmlLayer({
+          src: '../data/Chinatown Commuter Van Route Map.kml',
+          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+          map: map
+        });
+
 //Add my location
 var myloc = new google.maps.Marker({
     clickable: true,
@@ -129,7 +137,7 @@ if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos
     map.setCenter(me);
     map.setZoom(15);
 }, function(error) {
-    window.alert('We could not find your current location without your permission');
+    // window.alert('We could not find your current location without your permission');
 });
 
 // change language
@@ -137,14 +145,14 @@ if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos
 var supportedLanguages = {
   'en': 'ENGLISH',
   'es': 'SPANISH',
-  'fr': 'FRENCH',
+  'ja': 'JAPANESE',
   'zh-CN': 'CHINESE (SIMPLIFIED)',
   'zh-TW': 'CHINESE (TRADITIONAL)'
 };
 
 var selectLanguage = document.getElementById('changelanguage');
 selectLanguage.options[0] = new Option(
-    'Choose language to load the map',
+    'Language',
     '', true, true);
 var i = 1;
 for (var langCode in supportedLanguages) {
@@ -165,14 +173,14 @@ selectLanguage.onchange = function() {
   }
 };
 
-function loadScript(lang) {
+function loadScript(langcode) {
           var script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&language=ja&' +
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
               'callback=initMap';
-          // if (lang) {
-          //     script.src += '&language=' + lang;
-          // }
+          if (langcode) {
+              script.src += '&language=' + langcode;
+          }
           
           script.id = "google-maps-script";
           document.body.appendChild(script);
