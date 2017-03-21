@@ -112,7 +112,7 @@ document.getElementById('go-places').addEventListener('click', textSearchPlaces)
 
 //Add routes
 var ChinatownRoutes = new google.maps.KmlLayer({
-          url: 'zhoujh30.github.io/dollarvan/data/Chinatown%20Commuter%20Van%20Route%20Map.kml',
+          url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
           map: map
         });
 
@@ -175,7 +175,7 @@ selectLanguage.onchange = function() {
 function loadScript(langcode) {
           var script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBMxGbmxGwQOKZTFOhIsJ4z3BGFQ7gsSJ8&v=3&' +
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
               'callback=initMap';
           if (langcode) {
               script.src += '&language=' + langcode;

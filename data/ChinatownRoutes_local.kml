@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name>Chinatown Commuter Van Route Map</name>
+    <name>ChinatownRoutes</name>
     <description/>
-    <Style id="icon-1532-3949AB-nodesc-normal">
+    <Style id="icon-1532-3949AB-normal">
       <IconStyle>
         <color>ffab4939</color>
         <scale>1</scale>
@@ -14,11 +14,8 @@
       <LabelStyle>
         <scale>0</scale>
       </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <Style id="icon-1532-3949AB-nodesc-highlight">
+    <Style id="icon-1532-3949AB-highlight">
       <IconStyle>
         <color>ffab4939</color>
         <scale>1</scale>
@@ -29,21 +26,18 @@
       <LabelStyle>
         <scale>1</scale>
       </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <StyleMap id="icon-1532-3949AB-nodesc">
+    <StyleMap id="icon-1532-3949AB">
       <Pair>
         <key>normal</key>
-        <styleUrl>#icon-1532-3949AB-nodesc-normal</styleUrl>
+        <styleUrl>#icon-1532-3949AB-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#icon-1532-3949AB-nodesc-highlight</styleUrl>
+        <styleUrl>#icon-1532-3949AB-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="icon-1532-9C27B0-nodesc-normal">
+    <Style id="icon-1532-9C27B0-normal">
       <IconStyle>
         <color>ffb0279c</color>
         <scale>1</scale>
@@ -54,11 +48,8 @@
       <LabelStyle>
         <scale>0</scale>
       </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <Style id="icon-1532-9C27B0-nodesc-highlight">
+    <Style id="icon-1532-9C27B0-highlight">
       <IconStyle>
         <color>ffb0279c</color>
         <scale>1</scale>
@@ -69,21 +60,18 @@
       <LabelStyle>
         <scale>1</scale>
       </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <StyleMap id="icon-1532-9C27B0-nodesc">
+    <StyleMap id="icon-1532-9C27B0">
       <Pair>
         <key>normal</key>
-        <styleUrl>#icon-1532-9C27B0-nodesc-normal</styleUrl>
+        <styleUrl>#icon-1532-9C27B0-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#icon-1532-9C27B0-nodesc-highlight</styleUrl>
+        <styleUrl>#icon-1532-9C27B0-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="icon-1532-E65100-nodesc-normal">
+    <Style id="icon-1532-E65100-normal">
       <IconStyle>
         <color>ff0051e6</color>
         <scale>1</scale>
@@ -94,11 +82,8 @@
       <LabelStyle>
         <scale>0</scale>
       </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <Style id="icon-1532-E65100-nodesc-highlight">
+    <Style id="icon-1532-E65100-highlight">
       <IconStyle>
         <color>ff0051e6</color>
         <scale>1</scale>
@@ -109,81 +94,162 @@
       <LabelStyle>
         <scale>1</scale>
       </LabelStyle>
-      <BalloonStyle>
-        <text><![CDATA[<h3>$[name]</h3>]]></text>
-      </BalloonStyle>
     </Style>
-    <StyleMap id="icon-1532-E65100-nodesc">
+    <StyleMap id="icon-1532-E65100">
       <Pair>
         <key>normal</key>
-        <styleUrl>#icon-1532-E65100-nodesc-normal</styleUrl>
+        <styleUrl>#icon-1532-E65100-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#icon-1532-E65100-nodesc-highlight</styleUrl>
+        <styleUrl>#icon-1532-E65100-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="line-0288D1-4-nodesc-normal">
+    <Style id="line-673AB7-2-nodesc-normal">
       <LineStyle>
-        <color>ffd18802</color>
-        <width>4</width>
+        <color>ffb73a67</color>
+        <width>2</width>
       </LineStyle>
       <BalloonStyle>
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="line-0288D1-4-nodesc-highlight">
+    <Style id="line-673AB7-2-nodesc-highlight">
       <LineStyle>
-        <color>ffd18802</color>
-        <width>6</width>
+        <color>ffb73a67</color>
+        <width>3</width>
       </LineStyle>
       <BalloonStyle>
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="line-0288D1-4-nodesc">
+    <StyleMap id="line-673AB7-2-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#line-0288D1-4-nodesc-normal</styleUrl>
+        <styleUrl>#line-673AB7-2-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#line-0288D1-4-nodesc-highlight</styleUrl>
+        <styleUrl>#line-673AB7-2-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
-    <Style id="line-0288D1-5-nodesc-normal">
+    <Style id="line-673AB7-3-nodesc-normal">
       <LineStyle>
-        <color>ffd18802</color>
+        <color>ffb73a67</color>
+        <width>3</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-673AB7-3-nodesc-highlight">
+      <LineStyle>
+        <color>ffb73a67</color>
         <width>5</width>
       </LineStyle>
       <BalloonStyle>
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="line-0288D1-5-nodesc-highlight">
+    <StyleMap id="line-673AB7-3-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-673AB7-3-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-673AB7-3-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="line-9C27B0-1-nodesc-normal">
       <LineStyle>
-        <color>ffd18802</color>
-        <width>8</width>
+        <color>ffb0279c</color>
+        <width>1</width>
       </LineStyle>
       <BalloonStyle>
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="line-0288D1-5-nodesc">
+    <Style id="line-9C27B0-1-nodesc-highlight">
+      <LineStyle>
+        <color>ffb0279c</color>
+        <width>2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-9C27B0-1-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#line-0288D1-5-nodesc-normal</styleUrl>
+        <styleUrl>#line-9C27B0-1-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#line-0288D1-5-nodesc-highlight</styleUrl>
+        <styleUrl>#line-9C27B0-1-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="line-9C27B0-2-nodesc-normal">
+      <LineStyle>
+        <color>ffb0279c</color>
+        <width>2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-9C27B0-2-nodesc-highlight">
+      <LineStyle>
+        <color>ffb0279c</color>
+        <width>3</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-9C27B0-2-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-9C27B0-2-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-9C27B0-2-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="line-CE93D8-2-nodesc-normal">
+      <LineStyle>
+        <color>ffd893ce</color>
+        <width>2</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="line-CE93D8-2-nodesc-highlight">
+      <LineStyle>
+        <color>ffd893ce</color>
+        <width>3</width>
+      </LineStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="line-CE93D8-2-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#line-CE93D8-2-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#line-CE93D8-2-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Folder>
       <name>Brooklyn to Chinatown</name>
       <Placemark>
-        <name>Directions from 773 59th St, Brooklyn, NY 11220, USA to 17-31 Forsyth St, New York, NY 10002, USA</name>
-        <styleUrl>#line-0288D1-5-nodesc</styleUrl>
+        <name>Brooklyn to Chinatown</name>
+        <styleUrl>#line-CE93D8-2-nodesc</styleUrl>
         <LineString>
           <tessellate>1</tessellate>
           <coordinates>
@@ -727,7 +793,8 @@
       </Placemark>
       <Placemark>
         <name>773 59th St, Brooklyn, NY 11220, USA</name>
-        <styleUrl>#icon-1532-E65100-nodesc</styleUrl>
+        <description>Origin Only</description>
+        <styleUrl>#icon-1532-E65100</styleUrl>
         <Point>
           <coordinates>
             -74.009308,40.636294,0
@@ -736,7 +803,8 @@
       </Placemark>
       <Placemark>
         <name>17-31 Forsyth St, New York, NY 10002, USA</name>
-        <styleUrl>#icon-1532-3949AB-nodesc</styleUrl>
+        <description>Terminal Only</description>
+        <styleUrl>#icon-1532-3949AB</styleUrl>
         <Point>
           <coordinates>
             -73.994236,40.714463,0
@@ -747,8 +815,8 @@
     <Folder>
       <name>Brooklyn to Flushing</name>
       <Placemark>
-        <name>Directions from 6023-6099 8th Ave, Brooklyn, NY 11220, USA to 133-47-133-55 Sanford Ave, Flushing, NY 11355, USA</name>
-        <styleUrl>#line-0288D1-5-nodesc</styleUrl>
+        <name>Brooklyn to Flushing</name>
+        <styleUrl>#line-CE93D8-2-nodesc</styleUrl>
         <LineString>
           <tessellate>1</tessellate>
           <coordinates>
@@ -1744,7 +1812,8 @@
       </Placemark>
       <Placemark>
         <name>6023-6099 8th Ave, Brooklyn, NY 11220, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -74.009992,40.635074,0
@@ -1753,7 +1822,8 @@
       </Placemark>
       <Placemark>
         <name>133-47-133-55 Sanford Ave, Flushing, NY 11355, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -73.82921,40.756483,0
@@ -1764,8 +1834,8 @@
     <Folder>
       <name>Chinatown to Flushing</name>
       <Placemark>
-        <name>Directions from 5 Division St, New York, NY 10002, USA to 133-47-133-55 Sanford Ave, Flushing, NY 11355, USA</name>
-        <styleUrl>#line-0288D1-5-nodesc</styleUrl>
+        <name>Chinatown to Flushing</name>
+        <styleUrl>#line-9C27B0-2-nodesc</styleUrl>
         <LineString>
           <tessellate>1</tessellate>
           <coordinates>
@@ -2542,7 +2612,8 @@
       </Placemark>
       <Placemark>
         <name>5 Division St, New York, NY 10002, USA</name>
-        <styleUrl>#icon-1532-E65100-nodesc</styleUrl>
+        <description>Origin Only</description>
+        <styleUrl>#icon-1532-E65100</styleUrl>
         <Point>
           <coordinates>
             -73.997097,40.714062,0
@@ -2551,7 +2622,8 @@
       </Placemark>
       <Placemark>
         <name>133-47-133-55 Sanford Ave, Flushing, NY 11355, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -73.82921,40.756483,0
@@ -2562,8 +2634,8 @@
     <Folder>
       <name>Chinatown to Brooklyn</name>
       <Placemark>
-        <name>Directions from 88 E Broadway, New York, NY 10002, USA to 6023-6099 8th Ave, Brooklyn, NY 11220, USA</name>
-        <styleUrl>#line-0288D1-5-nodesc</styleUrl>
+        <name>Chinatown to Brooklyn</name>
+        <styleUrl>#line-9C27B0-1-nodesc</styleUrl>
         <LineString>
           <tessellate>1</tessellate>
           <coordinates>
@@ -3129,7 +3201,8 @@
       </Placemark>
       <Placemark>
         <name>88 E Broadway, New York, NY 10002, USA</name>
-        <styleUrl>#icon-1532-E65100-nodesc</styleUrl>
+        <description>Origin Only</description>
+        <styleUrl>#icon-1532-E65100</styleUrl>
         <Point>
           <coordinates>
             -73.994153,40.713736,0
@@ -3138,7 +3211,8 @@
       </Placemark>
       <Placemark>
         <name>6023-6099 8th Ave, Brooklyn, NY 11220, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -74.009992,40.635074,0
@@ -3149,8 +3223,8 @@
     <Folder>
       <name>Flushing to Chinatown</name>
       <Placemark>
-        <name>Directions from 133-47-133-55 Sanford Ave, Flushing, NY 11355, USA to 17-31 Forsyth St, New York, NY 10002, USA</name>
-        <styleUrl>#line-0288D1-5-nodesc</styleUrl>
+        <name>Flushing to Chinatown</name>
+        <styleUrl>#line-673AB7-3-nodesc</styleUrl>
         <LineString>
           <tessellate>1</tessellate>
           <coordinates>
@@ -3996,7 +4070,8 @@
       </Placemark>
       <Placemark>
         <name>133-47-133-55 Sanford Ave, Flushing, NY 11355, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -73.82921,40.756483,0
@@ -4005,7 +4080,8 @@
       </Placemark>
       <Placemark>
         <name>17-31 Forsyth St, New York, NY 10002, USA</name>
-        <styleUrl>#icon-1532-3949AB-nodesc</styleUrl>
+        <description>Terminal Only</description>
+        <styleUrl>#icon-1532-3949AB</styleUrl>
         <Point>
           <coordinates>
             -73.994236,40.714463,0
@@ -4016,8 +4092,8 @@
     <Folder>
       <name>Flushing to Brooklyn</name>
       <Placemark>
-        <name>Directions from 133-47-133-55 Sanford Ave, Flushing, NY 11355, USA to 6023-6099 8th Ave, Brooklyn, NY 11220, USA</name>
-        <styleUrl>#line-0288D1-4-nodesc</styleUrl>
+        <name>Flushing to Chinatown</name>
+        <styleUrl>#line-673AB7-2-nodesc</styleUrl>
         <LineString>
           <tessellate>1</tessellate>
           <coordinates>
@@ -4529,7 +4605,8 @@
       </Placemark>
       <Placemark>
         <name>133-47-133-55 Sanford Ave, Flushing, NY 11355, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -73.82921,40.756483,0
@@ -4538,7 +4615,8 @@
       </Placemark>
       <Placemark>
         <name>6023-6099 8th Ave, Brooklyn, NY 11220, USA</name>
-        <styleUrl>#icon-1532-9C27B0-nodesc</styleUrl>
+        <description>Origin and Terminal</description>
+        <styleUrl>#icon-1532-9C27B0</styleUrl>
         <Point>
           <coordinates>
             -74.009992,40.635074,0
