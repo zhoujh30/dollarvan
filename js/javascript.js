@@ -111,8 +111,15 @@ document.getElementById('go-places').addEventListener('click', textSearchPlaces)
 
 
 //Add routes
-var ChinatownRoutes = new google.maps.KmlLayer({
-          url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+var AllRoutes = new google.maps.KmlLayer({
+          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+          url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes.kml',
+          map: map
+        });
+
+var AllRoutes2 = new google.maps.KmlLayer({
+          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+          url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes2.kml',
           map: map
         });
 
