@@ -13,6 +13,52 @@ var placeMarkers = [];
 
 function initMap() {
 
+var styles = [
+  {
+    featureType:"landscape.natural",
+    elementType:"geometry.fill",
+    stylers:[
+      {visibility:"on"},
+      {color:"#e0efef"}
+      ]
+  },{
+    featureType:"poi",
+    elementType:"geometry.fill",
+    stylers:[
+      {visibility:"on"},
+      {hue:"#1900ff"},
+      {color:"#c0e8e8"}
+      ]
+  },{
+    featureType:"road",
+    elementType:"geometry",
+    stylers:[
+      {lightness:100},
+      {visibility:"simplified"}
+      ]
+  },{
+    featureType:"road",
+    elementType:"labels",
+    stylers:[
+      // {visibility:"off"}
+      ]
+  },{
+    featureType:"transit.line",
+    elementType:"geometry",
+    stylers:[
+      {visibility:"on"},
+      {color: '#969696'},
+      {lightness:20}
+      ]
+  },{
+    featureType:"water",
+    elementType:"all",
+    stylers:[
+      {color:"#7dcdcd"}
+      ]
+  }
+];
+
 // Constructor creates a new map - only center and zoom are required.
 map = new google.maps.Map(document.getElementById('map'), {
   center: {lat: 40.7413549, lng: -73.9980244},
@@ -21,11 +67,12 @@ map = new google.maps.Map(document.getElementById('map'), {
   mapTypeControl: true,
   scaleControl: true,
   streetViewControl: false,
+  styles: styles,
   rotateControl: true
 });
 
-var transitLayer = new google.maps.TransitLayer();
-transitLayer.setMap(map);
+// var transitLayer = new google.maps.TransitLayer();
+// transitLayer.setMap(map);
 
 // This autocomplete is for use in the search within time entry box.
 var timeAutocomplete = new google.maps.places.Autocomplete(
@@ -111,17 +158,19 @@ document.getElementById('go-places').addEventListener('click', textSearchPlaces)
 
 
 //Add routes
+var AllRoutes2 = new google.maps.KmlLayer({
+          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+          url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes2.kml',
+          map: map
+        });
+
 var AllRoutes = new google.maps.KmlLayer({
           // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
           url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes.kml',
           map: map
         });
 
-var AllRoutes2 = new google.maps.KmlLayer({
-          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
-          url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes2.kml',
-          map: map
-        });
+
 
 //Add my location
 var myloc = new google.maps.Marker({
