@@ -26,9 +26,18 @@ var styles = [
     elementType:"geometry.fill",
     stylers:[
       {visibility:"on"},
-      {hue:"#1900ff"},
-      {color:"#c0e8e8"}
+      {hue:"#c0e8e8"},
+      // {color:"#c0e8e8"} 
+      {saturation: -1.0989010989011234},
+      {lightness: 11.200000000000017},
+      {"gamma": 1} 
       ]
+  },{
+    featureType: "poi",
+    elementType:"labels.icon",
+    stylers: [
+      { visibility: "off" }
+      ]            
   },{
     featureType:"road",
     elementType:"geometry",
@@ -38,9 +47,9 @@ var styles = [
       ]
   },{
     featureType:"road",
-    elementType:"labels",
+    elementType:"labels.icon",
     stylers:[
-      // {visibility:"off"}
+      {visibility:"off"}
       ]
   },{
     featureType:"transit.line",
