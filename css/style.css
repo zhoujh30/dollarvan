@@ -101,3 +101,7 @@ hr {
   width: 24%;
 }
 
+#go-places {
+    background: url('https://image.freepik.com/free-icon/zoom-or-search-tool_318-34054.png') no-repeat scroll;
+    cursor: pointer;
+}

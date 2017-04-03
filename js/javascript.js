@@ -26,9 +26,18 @@ var styles = [
     elementType:"geometry.fill",
     stylers:[
       {visibility:"on"},
-      {hue:"#1900ff"},
-      {color:"#c0e8e8"}
+      {hue:"#c0e8e8"},
+      // {color:"#c0e8e8"} 
+      {saturation: -1.0989010989011234},
+      {lightness: 11.200000000000017},
+      {"gamma": 1} 
       ]
+  },{
+    featureType: "poi",
+    elementType:"labels.icon",
+    stylers: [
+      { visibility: "off" }
+      ]            
   },{
     featureType:"road",
     elementType:"geometry",
@@ -38,9 +47,9 @@ var styles = [
       ]
   },{
     featureType:"road",
-    elementType:"labels",
+    elementType:"labels.icon",
     stylers:[
-      // {visibility:"off"}
+      {visibility:"off"}
       ]
   },{
     featureType:"transit.line",
@@ -170,7 +179,74 @@ var AllRoutes = new google.maps.KmlLayer({
           map: map
         });
 
+//Add my location
+// button.onclick = function() {
+//   var startPos;
+//   var element = document.getElementById("nudge");
 
+//   var showNudgeBanner = function() {
+//     nudge.style.display = "block";
+//   };
+
+//   var hideNudgeBanner = function() {
+//     nudge.style.display = "none";
+//   };
+
+//   var nudgeTimeoutId = setTimeout(showNudgeBanner, 5000);
+
+//   var geoSuccess = function(position) {
+//     hideNudgeBanner();
+//     // We have the location, don't display banner
+//     clearTimeout(nudgeTimeoutId);
+
+//     // Do magic with location
+//     startPos = position;
+//     document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+//     document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+//   };
+//   var geoError = function(error) {
+//     switch(error.code) {
+//       case error.TIMEOUT:
+//         // The user didn't accept the callout
+//         showNudgeBanner();
+//         break;
+//       };
+//   };
+
+//   navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+// };
+
+// check for Geolocation support
+// if (navigator.geolocation) {
+//   console.log('Geolocation is supported!');
+// }
+// else {
+//   console.log('Geolocation is not supported for this Browser/OS.');
+// }
+
+// window.onload = function() {
+//   var startPos;
+//   var geoOptions = {
+//     maximumAge: 5 * 60 * 1000,
+//     timeout: 10 * 1000
+//   }
+
+//   var geoSuccess = function(position) {
+//     startPos = position;
+//     document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+//     document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+//   };
+//   var geoError = function(error) {
+//     console.log('Error occurred. Error code: ' + error.code);
+//     // error.code can be:
+//     //   0: unknown error
+//     //   1: permission denied
+//     //   2: position unavailable (error response from location provider)
+//     //   3: timed out
+//   };
+
+//   navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+// };
 
 //Add my location
 var myloc = new google.maps.Marker({
