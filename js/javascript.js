@@ -166,18 +166,73 @@ searchBox.addListener('places_changed', function() {
 document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 
 
-//Add routes
-var AllRoutes2 = new google.maps.KmlLayer({
-          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
-          url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes2.kml',
-          map: map
-        });
+//Add kml routes
+// var AllRoutes2 = new google.maps.KmlLayer({
+//           // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+//           url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes2.kml',
+//           map: map
+//         });
 
-var AllRoutes = new google.maps.KmlLayer({
-          // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
-          url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes.kml',
-          map: map
+// var AllRoutes = new google.maps.KmlLayer({
+//           // url: 'http://www.google.com/maps/d/kml?forcekml=1&mid=1qGF6CiIsizWbM3m4qUfTmSuc7m4',
+//           url: 'https://zhoujh30.github.io/dollarvan/data/AllRoutes.kml',
+//           map: map
+//         });
+
+//Add geojson routes 
+var stations = $.getJSON("data/all_stations.geojson"); //same as map.data.loadGeoJson();
+      stations.then(function(data){
+        cachedGeoJson = data; //save the geojson in case we want to update its values
+        map.data.addGeoJson(cachedGeoJson,{idPropertyName:"cartodb_id"});
+        map.data.setStyle(function(feature) {
+            var symbolid = feature.getProperty('symbolid');
+            function getColor(d) {
+              return d ==0 ? 'blue':
+                d ==1 ? 'red':
+                'purple';
+              }
+            var color = getColor(symbolid);
+            return {
+              fillColor: 'blue',
+              icon: new google.maps.MarkerImage('//maps.gstatic.com/mapfiles/mobile/mobileimgs2.png',
+                                                              new google.maps.Size(22,22),
+                                                              new google.maps.Point(0,18),
+                                                              new google.maps.Point(11,11))
+            };
+        });    
+      });
+
+var routes = $.getJSON("data/all_routes.geojson"); //same as map.data.loadGeoJson();
+      routes.then(function(data){
+        var infowindow = new google.maps.InfoWindow();
+        cachedGeoJson = data; //save the geojson in case we want to update its values
+        map.data.addGeoJson(cachedGeoJson,{idPropertyName:"cartodb_id"});
+        map.data.setStyle(function (feature) {
+            var symbolid = feature.getProperty('symbolid');
+            function getColor(d) {
+              return d <= 5 ? '#fdbf6f':
+                d <= 7 ? '#377eb8':
+                '#a65628';
+              }
+            var color = getColor(symbolid);
+            return {
+                strokeColor: color,
+                strokeWeight: 3,
+                strokeOpacity: 0.7
+            };
         });
+        // map.data.addListener('click', function(event) {
+        //     var myHTML = event.feature.getProperty("name");
+        //     infowindow.setContent("<div style='width:150px; text-align: center;'>"+myHTML+"</div>");
+        //     infowindow.setPosition(event.feature.getGeometry().get());
+        //     infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)});
+        //     infowindow.open(map);
+        // });
+      });
+
+
+
+
 
 //Add my location
 // button.onclick = function() {
@@ -381,15 +436,15 @@ if (infowindow.marker != marker) {
 }
 
 // This function will loop through the markers array and display them all.
-function showListings() {
-var bounds = new google.maps.LatLngBounds();
-// Extend the boundaries of the map for each marker and display the marker
-for (var i = 0; i < markers.length; i++) {
-  markers[i].setMap(map);
-  bounds.extend(markers[i].position);
-}
-map.fitBounds(bounds);
-}
+// function showListings() {
+// var bounds = new google.maps.LatLngBounds();
+// // Extend the boundaries of the map for each marker and display the marker
+// for (var i = 0; i < markers.length; i++) {
+//   markers[i].setMap(map);
+//   bounds.extend(markers[i].position);
+// }
+// map.fitBounds(bounds);
+// }
 
 // This function will loop through the listings and hide them all.
 function hideMarkers(markers) {
