@@ -18,15 +18,15 @@ var styles = [
     featureType:"landscape.natural",
     elementType:"geometry.fill",
     stylers:[
-      {visibility:"on"},
-      {color:"#e0efef"}
+//      {visibility:"on"},
+//      {color:"#e0efef"}
       ]
   },{
     featureType:"poi",
     elementType:"geometry.fill",
     stylers:[
       {visibility:"on"},
-      {hue:"#c0e8e8"},
+      {hue:"#c5dac6"},
       // {color:"#c0e8e8"} 
       {saturation: -1.0989010989011234},
       {lightness: 11.200000000000017},
@@ -63,7 +63,7 @@ var styles = [
     featureType:"water",
     elementType:"all",
     stylers:[
-      {color:"#7dcdcd"}
+      {color:"#acbcc9"}
       ]
   }
 ];
